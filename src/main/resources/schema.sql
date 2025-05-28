@@ -1,6 +1,6 @@
 --spring boot uses schema.sql for ddl commands
 
-create table books(
+create table if not exists books(
     id serial primary key,
     title varchar(255) not null,
     about text,
@@ -9,7 +9,7 @@ create table books(
     available BOOLEAN DEFAULT TRUE
 );
 
-create table users(
+create table if not exists users(
     user_id serial primary key,
     user_name text,
     user_phone_no int,
