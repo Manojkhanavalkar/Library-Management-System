@@ -37,8 +37,7 @@ public class BookDao {
     }
 
     public void update(int id, Book newBook){
-        String query="update books set title=?,about=?,author=?,language=?,available=?" +
-                " where id=?";
+        String query="update books set title=?,about=?,author=?,language=?,available=? where id=?";
         int rowsAffected=jdbcTemplate.update(
                 query,
                 newBook.getTitle(),
@@ -48,6 +47,7 @@ public class BookDao {
                 newBook.getAvailable(),
                 id
                 );
+        System.out.println("number of rows updated = "+rowsAffected);
     }
 
     //get the book

@@ -5,7 +5,7 @@ public class User {
     String user_name;
     int user_phone_no;
     String user_address;
-    int no_of_books_issued;
+
 
     int book_id;
 
@@ -49,11 +49,5 @@ public class User {
         this.user_address = user_address;
     }
 
-    public int getNo_of_books_issued() {
-        return no_of_books_issued;
-    }
 
-    public void setNo_of_books_issued(int no_of_books_issued) {
-        this.no_of_books_issued = no_of_books_issued;
-    }
 }

@@ -1,11 +1,14 @@
 package com.library.management;
 
 import com.library.management.dao.BookDao;
+import com.library.management.dao.UserDao;
 import com.library.management.entity.Book;
+import com.library.management.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.relational.core.sql.In;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -16,6 +19,9 @@ public class LibraryManagementSystemApplication implements CommandLineRunner {
 
 	@Autowired
 	private BookDao bookDao;
+
+	@Autowired
+	private UserDao userDao;
 
 	public static void main(String[] args) {
 		SpringApplication.run(LibraryManagementSystemApplication.class, args);
@@ -37,6 +43,10 @@ public class LibraryManagementSystemApplication implements CommandLineRunner {
 				System.out.println("PRESS 5 to Delete a book");
 				System.out.println("PRESS 6 to view a book details");
 				System.out.println("PRESS 7 to Exit");
+				System.out.println("PRESS 8 to issue book to user");
+				System.out.println("PRESS 9 to return book from user");
+				System.out.println("PRESS 10 to view all issued book");
+				System.out.println("PRESS 11 to view the USER menu: ");
 				System.out.println("Enter you choice:");
 
 				int choice=Integer.parseInt(bufferedReader.readLine());
@@ -76,10 +86,52 @@ public class LibraryManagementSystemApplication implements CommandLineRunner {
 					System.out.println();
 
 				} else if (choice==3) {
+					//search logic
+					System.out.println("Enter the book title to search");
+					String titleKeyword=bufferedReader.readLine();
+					List<Book> search=bookDao.search(titleKeyword);
+
+					System.out.println("ID | Title");
+
+					search.forEach(book -> {
+						System.out.println(book.getId()+" | "+book.getTitle());
+					});
+					System.out.println("-----------------------------------");
+					System.out.println();
+
 
 				} else if (choice==4) {
+					//update code
+					System.out.println("Enter the book Id:");
+					int id=Integer.parseInt(bufferedReader.readLine());
+					Book updatedBook=new Book();
+					System.out.println("Enter book title: ");
+					String title= bufferedReader.readLine();
+					System.out.println("Enter the book about: ");
+					String about= bufferedReader.readLine();
+					System.out.println("Enter the book author: ");
+					String author= bufferedReader.readLine();
+					System.out.println("Enter the book language: ");
+					String language= bufferedReader.readLine();
+					System.out.println("Enter the book available :[T/F]");
+					String available= bufferedReader.readLine();
+					boolean isAvailable=available.equalsIgnoreCase("T");
+					updatedBook.setTitle(title);
+					updatedBook.setAbout(about);
+					updatedBook.setAuthor(author);
+					updatedBook.setLanguage(language);
+					updatedBook.setAvailable(isAvailable);
+					bookDao.update(id,updatedBook);
+
 
 				} else if (choice==5) {
+
+					System.out.println("Enter the book id:");
+					int bookId=Integer.parseInt(bufferedReader.readLine());
+					bookDao.delete(bookId);
+					System.out.println("Book deleted successfully");
+					System.out.println("------------------------");
+					System.out.println();
 
 				} else if (choice==6) {
 					System.out.println("Enter the book id:");
@@ -97,6 +149,54 @@ public class LibraryManagementSystemApplication implements CommandLineRunner {
 				} else if (choice==7) {
 					System.out.println("Exiting App");
 					break;
+				} else if (choice == 8) {
+					//book ko issue karna hai:
+					System.out.println("Enter the book id:");
+					int bookId=Integer.parseInt(bufferedReader.readLine());
+
+					Book book=bookDao.get(bookId);
+
+					if(!book.getAvailable()){
+						System.out.println("Book is not available");
+						return;
+					}
+					System.out.println("Enter the user id: ");
+					int user_id= Integer.parseInt(bufferedReader.readLine());
+
+				} else if (choice==11) {
+					System.out.println("PRESS 1 to enter the user:");
+					System.out.println("PRESS 2 to get the user list:");
+					System.out.println("PRESS 3 to get  the specific user information:");
+					System.out.println("PRESS 4 to enter update user:");
+					System.out.println("PRESS 5 to exit the user menu:");
+					System.out.println("Enter you choice:");
+
+					int userChoice=Integer.parseInt(bufferedReader.readLine());
+					if(userChoice==1){
+						User user=new User();
+						System.out.println("Enter the user name:");
+						String name=bufferedReader.readLine();
+						System.out.println("Enter the user phone no:");
+						int userPhoneNo=Integer.parseInt(bufferedReader.readLine());
+						System.out.println("Enter user address:");
+						String userAddress= bufferedReader.readLine();
+
+					} else if (userChoice == 2) {
+						System.out.println("********* Kadak Library Users List ***********");
+						System.out.println("==============================");
+						System.out.println("ID | User Name");
+						List<User> users= userDao.getAll();
+						users.forEach(user -> {
+							System.out.println(user.getUser_id()+"|"+user.getUser_name());
+						});
+						System.out.println("----------------------------------");
+						System.out.println();
+					} else if (userChoice == 3) {
+						System.out.println("Enter user_id=");
+						int userId=Integer.parseInt(bufferedReader.readLine());
+
+					}
+
 				}
 			}
 		}catch (Exception e){
