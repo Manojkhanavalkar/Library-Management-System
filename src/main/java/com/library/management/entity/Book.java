@@ -8,6 +8,16 @@ public class Book {
     private String language;
     private Boolean available=true;
 
+    int priceOfDay;
+
+    public int getPriceOfDay() {
+        return priceOfDay;
+    }
+
+    public void setPriceOfDay(int priceOfDay) {
+        this.priceOfDay = priceOfDay;
+    }
+
     public int getId() {
         return id;
     }

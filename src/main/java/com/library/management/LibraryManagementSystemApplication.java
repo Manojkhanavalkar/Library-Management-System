@@ -12,6 +12,7 @@ import org.springframework.data.relational.core.sql.In;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
 import java.util.List;
 
 @SpringBootApplication
@@ -62,6 +63,8 @@ public class LibraryManagementSystemApplication implements CommandLineRunner {
 					System.out.println("Enter the book available :[T/F]");
 					String available= bufferedReader.readLine();
 					boolean isAvailable=available.equalsIgnoreCase("T");
+					System.out.println("Enter the price for the day:");
+					int priceOfDay=Integer.parseInt(bufferedReader.readLine());
 					Book book=new Book();
 
 					book.setTitle(title);
@@ -69,6 +72,7 @@ public class LibraryManagementSystemApplication implements CommandLineRunner {
 					book.setAuthor(author);
 					book.setLanguage(language);
 					book.setAvailable(isAvailable);
+					book.setPriceOfDay(priceOfDay);
 					bookDao.save(book);
 					System.out.println("Book added Successfully");
 
@@ -115,12 +119,16 @@ public class LibraryManagementSystemApplication implements CommandLineRunner {
 					String language= bufferedReader.readLine();
 					System.out.println("Enter the book available :[T/F]");
 					String available= bufferedReader.readLine();
+					System.out.println("Enter the price for the day:");
+					int priceOfDay=Integer.parseInt(bufferedReader.readLine());
 					boolean isAvailable=available.equalsIgnoreCase("T");
 					updatedBook.setTitle(title);
 					updatedBook.setAbout(about);
 					updatedBook.setAuthor(author);
 					updatedBook.setLanguage(language);
 					updatedBook.setAvailable(isAvailable);
+					updatedBook.setPriceOfDay(priceOfDay);
+
 					bookDao.update(id,updatedBook);
 
 
@@ -144,6 +152,7 @@ public class LibraryManagementSystemApplication implements CommandLineRunner {
 					System.out.println("Book Language:"+book.getLanguage());
 					System.out.println("Book Author:"+book.getAuthor());
 					System.out.println("Book Available:"+(book.getAvailable()?"Yes":"No"));
+					System.out.println("Book price for a day:"+book.getPriceOfDay());
 					System.out.println("-----------------------");
 
 				} else if (choice==7) {
@@ -162,7 +171,13 @@ public class LibraryManagementSystemApplication implements CommandLineRunner {
 					}
 					System.out.println("Enter the user id: ");
 					int user_id= Integer.parseInt(bufferedReader.readLine());
+					User user= userDao.get(user_id);
 
+					LocalDate issueDate=LocalDate.now();
+					System.out.println("Enter days to issue: ");
+					int days=Integer.parseInt(bufferedReader.readLine());
+					int totalPrice=days*book.getPriceOfDay();
+					LocalDate submitDate=issueDate.plusDays(days);
 
 
 				} else if (choice==11) {//user CRUD logic

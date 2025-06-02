@@ -6,7 +6,8 @@ create table if not exists books(
     about text,
     author varchar(255),
     language varchar(255),
-    available BOOLEAN DEFAULT TRUE
+    available BOOLEAN DEFAULT TRUE,
+    price_for_day int
 );
 
 create table if not exists users(
@@ -21,7 +22,9 @@ create table if not exists issued_book(
     id int references books,
     user_id int references users,
     isusedate DATE,
-    price decimal(10,2),
+    issue_for_day int,
+    price_total int,
     subdate DATE,
+    penalty_amount int default 0,
     returned boolean default false
 );
