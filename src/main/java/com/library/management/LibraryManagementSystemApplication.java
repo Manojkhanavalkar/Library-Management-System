@@ -163,38 +163,85 @@ public class LibraryManagementSystemApplication implements CommandLineRunner {
 					System.out.println("Enter the user id: ");
 					int user_id= Integer.parseInt(bufferedReader.readLine());
 
-				} else if (choice==11) {
-					System.out.println("PRESS 1 to enter the user:");
-					System.out.println("PRESS 2 to get the user list:");
-					System.out.println("PRESS 3 to get  the specific user information:");
-					System.out.println("PRESS 4 to enter update user:");
-					System.out.println("PRESS 5 to exit the user menu:");
-					System.out.println("Enter you choice:");
 
-					int userChoice=Integer.parseInt(bufferedReader.readLine());
-					if(userChoice==1){
-						User user=new User();
-						System.out.println("Enter the user name:");
-						String name=bufferedReader.readLine();
-						System.out.println("Enter the user phone no:");
-						int userPhoneNo=Integer.parseInt(bufferedReader.readLine());
-						System.out.println("Enter user address:");
-						String userAddress= bufferedReader.readLine();
 
-					} else if (userChoice == 2) {
-						System.out.println("********* Kadak Library Users List ***********");
-						System.out.println("==============================");
-						System.out.println("ID | User Name");
-						List<User> users= userDao.getAll();
-						users.forEach(user -> {
-							System.out.println(user.getUser_id()+"|"+user.getUser_name());
-						});
-						System.out.println("----------------------------------");
-						System.out.println();
-					} else if (userChoice == 3) {
-						System.out.println("Enter user_id=");
-						int userId=Integer.parseInt(bufferedReader.readLine());
+				} else if (choice==11) {//user CRUD logic
+					try{
+						while (true){
+							System.out.println("PRESS 1 to enter the user:");
+							System.out.println("PRESS 2 to get the user list:");
+							System.out.println("PRESS 3 to get  the specific user information:");
+							System.out.println("PRESS 4 to enter update user:");
+							System.out.println("PRESS 5 to delete user:");
+							System.out.println("PRESS 6 to exit user menu:");
+							System.out.println("Enter you choice:");
 
+							int userChoice=Integer.parseInt(bufferedReader.readLine());
+							if(userChoice==1){
+								User user=new User();
+
+								System.out.println("Enter the user name:");
+								String name=bufferedReader.readLine();
+								System.out.println("Enter the user phone no:");
+								int userPhoneNo=Integer.parseInt(bufferedReader.readLine());
+								System.out.println("Enter user address:");
+								String userAddress= bufferedReader.readLine();
+								user.setUser_name(name);
+								user.setUser_phone_no(userPhoneNo);
+								user.setUser_address(userAddress);
+								userDao.save(user);
+								System.out.println("user saved successfully");
+								System.out.println();
+
+							} else if (userChoice == 2) {
+								System.out.println("********* Kadak Library Users List ***********");
+								System.out.println("==============================");
+								System.out.println("ID | User Name");
+								List<User> users= userDao.getAll();
+								users.forEach(user -> {
+									System.out.println(user.getUser_id()+"|"+user.getUser_name());
+								});
+								System.out.println("----------------------------------");
+								System.out.println();
+							} else if (userChoice == 3) {
+								System.out.println("Enter user_id=");
+								int userId=Integer.parseInt(bufferedReader.readLine());
+								User user=userDao.get(userId);
+								System.out.println("*********User Info********");
+								System.out.println("======================");
+								System.out.println("User id:"+user.getUser_id());
+								System.out.println("User name:"+user.getUser_name());
+								System.out.println("User phone number="+user.getUser_phone_no());
+								System.out.println("User Address="+user.getUser_address());
+								System.out.println("----------------------------------------");
+								System.out.println();
+							} else if (userChoice == 4) {
+								System.out.println("Enter the User Id:");
+								int userId=Integer.parseInt(bufferedReader.readLine());
+								User updateUser=new User();
+								System.out.println("Enter user name : ");
+								String userName= bufferedReader.readLine();
+								System.out.println("Enter the user phone no : ");
+								int userPhoneNo= Integer.parseInt(bufferedReader.readLine());
+								System.out.println("Enter the User address: ");
+								String userAddress= bufferedReader.readLine();
+
+								updateUser.setUser_name(userName);
+								updateUser.setUser_phone_no(userPhoneNo);
+								updateUser.setUser_address(userAddress);
+								userDao.update(userId,updateUser);
+
+							} else if (userChoice==5) {
+								System.out.println("Enter the User Id:");
+								int userId=Integer.parseInt(bufferedReader.readLine());
+								userDao.delete(userId);
+							} else if (userChoice==6) {
+								System.out.println("Exiting user menu:");
+								break;
+							}
+						}
+					}catch (Exception e){
+						System.out.println("exception occured:"+e.getMessage());
 					}
 
 				}

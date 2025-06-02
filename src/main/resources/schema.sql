@@ -13,7 +13,7 @@ create table if not exists users(
     user_id serial primary key,
     user_name text,
     user_phone_no int,
-    user_address text,
+    user_address text
 );
 
 create table if not exists issued_book(
