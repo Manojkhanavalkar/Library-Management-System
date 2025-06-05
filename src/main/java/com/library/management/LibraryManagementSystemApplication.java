@@ -1,8 +1,10 @@
 package com.library.management;
 
 import com.library.management.dao.BookDao;
+import com.library.management.dao.IssueBookDao;
 import com.library.management.dao.UserDao;
 import com.library.management.entity.Book;
+import com.library.management.entity.IssueBook;
 import com.library.management.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -23,6 +25,9 @@ public class LibraryManagementSystemApplication implements CommandLineRunner {
 
 	@Autowired
 	private UserDao userDao;
+
+	@Autowired
+	private IssueBookDao issueBookDao;
 
 	public static void main(String[] args) {
 		SpringApplication.run(LibraryManagementSystemApplication.class, args);
@@ -178,6 +183,25 @@ public class LibraryManagementSystemApplication implements CommandLineRunner {
 					int days=Integer.parseInt(bufferedReader.readLine());
 					int totalPrice=days*book.getPriceOfDay();
 					LocalDate submitDate=issueDate.plusDays(days);
+
+					//lets create object of IssueBook
+
+					IssueBook issueBook=new IssueBook();
+					issueBook.setBookId(book.getId());
+					issueBook.setUserId(user.getUser_id());
+					issueBook.setIssueDate(issueDate);
+					issueBook.setIssuedForDay(days);
+					issueBook.setPenalty(0);
+					issueBook.setTotalAmount(totalPrice);
+					issueBook.setSubmitDate(submitDate);
+					issueBook.setReturned(false);
+
+					//now lets save this issue book
+					int rows= issueBookDao.issueBook(issueBook);
+					System.out.println("Number of rows inserted: "+rows);
+					System.out.println("Book Issued successfully!!");
+					book.setAvailable(false);
+					bookDao.update(book.getId(),book);
 
 
 				} else if (choice==11) {//user CRUD logic

@@ -2,7 +2,7 @@ package com.library.management.entity;
 
 import java.time.LocalDate;
 
-public class issueBook {
+public class IssueBook {
     private int ibId;
     private int bookId;
     private int userId;
