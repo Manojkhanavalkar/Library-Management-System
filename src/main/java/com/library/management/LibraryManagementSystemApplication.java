@@ -197,13 +197,28 @@ public class LibraryManagementSystemApplication implements CommandLineRunner {
 					issueBook.setReturned(false);
 
 					//now lets save this issue book
-					int rows= issueBookDao.issueBook(issueBook);
-					System.out.println("Number of rows inserted: "+rows);
+					int issueBookId= issueBookDao.issueBook(issueBook);
+
 					System.out.println("Book Issued successfully!!");
+					System.out.println("Your issue book ID : "+issueBookId);
+					System.out.println();
 					book.setAvailable(false);
 					bookDao.update(book.getId(),book);
 
 
+				} else if (choice==9) {
+					System.out.println("Enter the issued book id to return :");
+					int ib_id=Integer.parseInt(bufferedReader.readLine());
+					int id=issueBookDao.returnBook(ib_id);
+					Book book=bookDao.get(id);
+					book.setAvailable(true);
+					bookDao.update(id,book);
+					
+				} else if (choice==10) {
+						List<Book> issuedBooks=issueBookDao.getAllIssuedBooks();
+					issuedBooks.forEach(book -> {
+						System.out.println(book.getId()+" | "+book.getTitle());
+					});
 				} else if (choice==11) {//user CRUD logic
 					try{
 						while (true){
